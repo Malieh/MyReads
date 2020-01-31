@@ -34,7 +34,7 @@ const Search = props => {
             props.searchResult.map(book => {
               if (book.imageLinks) {
                 return (
-                  <li>
+                  <li key={props.id}>
                     <Book
                       title={book.title}
                       id={book.id}
@@ -47,13 +47,13 @@ const Search = props => {
                 );
               }
               return (
-                <li>
+                <li key={props.id}>
                   <Book
                     title={book.title}
                     id={book.id}
                     key={book.id}
                     shelf={book.shelf}
-                    onChangeShelf={this.handleChangeShelf}
+                    onChangeShelf={props.onChangeShelf}
                   />
                 </li>
               );

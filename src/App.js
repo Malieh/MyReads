@@ -26,18 +26,39 @@ class BooksApp extends React.Component {
   }
 
   handleSearch = async event => {
-    const searchTerm = event.target.value;
+    let searchTerm;
+    if (event.target) {
+       searchTerm = event.target.value;
+    } else {
+       searchTerm = event;
+    }
+    
     let searchResult = await BooksAPI.search(searchTerm);
+    // check the shelf in the books result with that  of the getapi.
+
+    for (let i = 0; i < searchResult.length; i++) {
+      for (let j = 0; j < this.state.books.length; j++) {
+       if (searchResult[i].id === this.state.books[j].id ) {
+        searchResult[i].shelf = this.state.books[j].shelf
+        break
+       }
+
+       if (searchResult[i].shelf === undefined) {
+        searchResult[i].shelf = 'none'
+       }
+      }
+    }
     this.setState({ searchResult, searchTerm });
   };
 
   handleChangeShelf = async (id, event) => {
     let shelf = event.target.value;
-    console.log("shelf that is clicked is " + shelf);
     let book = await BooksAPI.get(id);
-    console.log(book);
     await BooksAPI.update(book, shelf);
     let books = await BooksAPI.getAll();
+    if (this.state.searchTerm) {
+      this.handleSearch(this.state.searchTerm)
+    }
     this.setState({ books });
   };
 
