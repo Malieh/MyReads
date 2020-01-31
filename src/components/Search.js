@@ -22,7 +22,7 @@ const Search = props => {
           <input
             type='text'
             placeholder='Search by title or author'
-            value={props.searchTerm}
+            value={props.searchTerm || ""}
             onChange={e => props.onSearch(e)}
           />
         </div>
@@ -31,10 +31,10 @@ const Search = props => {
         <ol className='books-grid'>
           {Array.isArray(props.searchResult) &&
             props.searchResult.length &&
-            props.searchResult.map(book => {
+            props.searchResult.map((book, index) => {
               if (book.imageLinks) {
                 return (
-                  <li key={props.id}>
+                  <li key={`${props.id}${index}`}>
                     <Book
                       title={book.title}
                       id={book.id}
